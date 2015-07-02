@@ -14,6 +14,7 @@ import java.io.*;
 import java.net.*;
  
 public class JavaGetUrl {
+    
  
    public static void main (String[] args) {
  
@@ -63,7 +64,33 @@ public class JavaGetUrl {
          //------------------------------------------------------------//
  
          while ((s = dis.readLine()) != null) {
-            System.out.println(s);
+//            System.out.println(s);
+                     
+         if(s.indexOf("carpark ")>=0)
+         {
+            int startIndex1 = s.indexOf("name")+6;
+//            System.out.println("indexOf(name) = " + startIndex1);
+            int endIndex1 = s.indexOf("spaces")-2;
+//            System.out.println("indexOf(\"spaces\") = " + endIndex1);
+//            System.out.println(s.substring(startIndex, endIndex));  
+            String result1 = (s.substring(startIndex1, endIndex1));
+            System.out.println(result1);
+
+            int startIndex2 = s.indexOf("spaces")+8;
+//            System.out.println("indexOf(spaces) = " + startIndex2);
+            int endIndex2 = s.indexOf(">")-1;
+//            System.out.println("indexOf(\">\") = " + endIndex2);
+//            System.out.println(s.substring(startIndex, endIndex));  
+            String result2 = (s.substring(startIndex2, endIndex2));
+            System.out.println(result2);
+            
+         }
+         else
+         {
+//           System.out.println( );  
+         }
+   
+         
          }
  
       } catch (MalformedURLException mue) {
@@ -91,7 +118,9 @@ public class JavaGetUrl {
          }
  
       } // end of 'finally' clause
- 
+      
+      
+    
    }  // end of main
  
 } // end of class definition
