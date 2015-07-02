@@ -12,6 +12,9 @@ package Test;
  
 import java.io.*;
 import java.net.*;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
  
 public class JavaGetUrl {
     
@@ -65,7 +68,8 @@ public class JavaGetUrl {
  
          while ((s = dis.readLine()) != null) {
 //            System.out.println(s);
-                     
+          
+         //Function to cut out carpark name and spaces of the whole XML output
          if(s.indexOf("carpark ")>=0)
          {
             int startIndex1 = s.indexOf("name")+6;
@@ -77,22 +81,22 @@ public class JavaGetUrl {
             System.out.println(result1);
 
             int startIndex2 = s.indexOf("spaces")+8;
-//            System.out.println("indexOf(spaces) = " + startIndex2);
-            int endIndex2 = s.indexOf(">")-1;
-//            System.out.println("indexOf(\">\") = " + endIndex2);
-//            System.out.println(s.substring(startIndex, endIndex));  
+            int endIndex2 = s.indexOf(">")-1;  
             String result2 = (s.substring(startIndex2, endIndex2));
             System.out.println(result2);
-            
-         }
+
+         }//end if 
+         
          else
          {
-//           System.out.println( );  
-         }
-   
-         
-         }
+//           System.out.println( );
+             
+         }// end else
+
+         } //end while loop
  
+
+         
       } catch (MalformedURLException mue) {
  
          System.out.println("Ouch - a MalformedURLException happened.");
@@ -119,8 +123,17 @@ public class JavaGetUrl {
  
       } // end of 'finally' clause
       
-      
+      //Calling function to retrieve time
+      getDateTime();
     
    }  // end of main
- 
+   
+   //Function to retrieve time
+    private static String getDateTime() {
+    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+    Date date = new Date();
+     System.out.println(dateFormat.format(date));
+    return dateFormat.format(date);
+    }// end function time
+    
 } // end of class definition
