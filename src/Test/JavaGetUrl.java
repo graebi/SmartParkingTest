@@ -41,7 +41,7 @@ public class JavaGetUrl {
  
      
       String space;
-      String carpark;      
+      String carpark;  
       
       URL u;
       InputStream is = null;
@@ -84,41 +84,69 @@ public class JavaGetUrl {
          // from a command-line, not from an application or applet.    //
          //------------------------------------------------------------//
  
-         System.out.println("DB connection bevore try");
+         //Initialise totalCarPark to 0 -> this value will be used to count later
+         // the ID in parking table.
+         int totalCarPark=0;
+         
+         
+         //Establish database connection
          try {
              con = DriverManager.getConnection(url, user, password);
              state = con.createStatement();
 
+         //Delete all values of carpark table to have always the same ID number
+         //in the ID field correct set 
+         String query1 = "Delete from carpark";
+         state.executeUpdate(query1);      
+             
+         //Read each record of the input stream until the end of line
          while ((s = dis.readLine()) != null) {
-//            System.out.println(s);
-
                 
-         //Function to cut out carpark name and spaces of the whole XML output
+         //Retrive carpark name and spaces of one line of the whole XML output
          if(s.indexOf("carpark ")>=0)
          {
+             //Increment total number of car park -> used for ID number in the 
+             //database carpark
+             totalCarPark++;
+             
+             //Search for name in String and places curser 6 positions after
+             //the "n" of name to star reading in the carpark name
             int startIndex1 = s.indexOf("name")+6;
-//            System.out.println("indexOf(name) = " + startIndex1);
+//            System.out.println("indexOf(name) = " + startIndex1); //delete this
+            
+             //Search for space in String and places curser 2 positions before
+             //the "spaces"-> this will be the end of the car park name
             int endIndex1 = s.indexOf("spaces")-2;
-//            System.out.println("indexOf(\"spaces\") = " + endIndex1);
-//            System.out.println(s.substring(startIndex, endIndex));  
+//            System.out.println("indexOf(\"spaces\") = " + endIndex1); //delete this
+//            System.out.println(s.substring(startIndex, endIndex));  //delete this
+            
+            //Create car park name from the start and end index
             carpark = (s.substring(startIndex1, endIndex1));
-            System.out.println(carpark);
+            System.out.println(carpark); //for testing purpose -> delete this
 
+             //Search for space in String and places curser 8 positions after
+             //the "spaces"-> this will be the start of the car park space number            
             int startIndex2 = s.indexOf("spaces")+8;
+             //Search for ">" in String and places curser 1 positions before
+             //the ">"-> this will be the end of the car park space number  
             int endIndex2 = s.indexOf(">")-1;  
+             //Create car park space from the start and end index
             space = (s.substring(startIndex2, endIndex2));
-            System.out.println(space);
+            System.out.println(space); //delete this
             
-            System.out.println("bevore insert into DB");
-            String query = "INSERT INTO carpark(name) VALUES('" + carpark + "')";
+
+            System.out.println("bevore insert into DB");//delete this
+            System.out.printf("%d\n", totalCarPark);//delete this
+            
+//          Insert data into the database
+            String query = "INSERT INTO carpark(id,name,space) VALUES('" + totalCarPark + "','" + carpark + "','" + space + "')";
                 state.executeUpdate(query);           
-            
 
          }//end if 
          
          else
          {
-//           System.out.println( );
+//           System.out.println( );//delete this
              
          }// end else
 
@@ -130,9 +158,7 @@ public class JavaGetUrl {
              lgr.log(Level.SEVERE, ex.getMessage(), ex);
          }//end of catch 
          
-         
-         
-         
+
       } catch (MalformedURLException mue) {
  
          System.out.println("Ouch - a MalformedURLException happened.");
@@ -158,10 +184,11 @@ public class JavaGetUrl {
          }
  
       } // end of 'finally' clause
+
       
-      //Calling function to retrieve time
-      getDateTime();
-    
+                //Calling function to retrieve time - noch insert in DB
+            String time = getDateTime();
+            System.out.println(time);//delete this
    }  // end of main
    
    //Function to retrieve time
