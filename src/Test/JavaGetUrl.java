@@ -24,7 +24,8 @@ import java.util.logging.Logger;
  
 public class JavaGetUrl {
    
-//    private static String spaces ;
+//    private static String time ;
+        private static String time;
  
    public static void main (String[] args) {
  
@@ -40,8 +41,7 @@ public class JavaGetUrl {
       String password = "Test1234";
  
      
-      String space;
-      String carpark;  
+      String space, carpark, sptime;  
       
       URL u;
       InputStream is = null;
@@ -97,7 +97,10 @@ public class JavaGetUrl {
          //Delete all values of carpark table to have always the same ID number
          //in the ID field correct set 
          String query1 = "Delete from carpark";
-         state.executeUpdate(query1);      
+         state.executeUpdate(query1); 
+         
+         //Calling function to retrieve time and store the result in variable time
+         time = getDateTime();
              
          //Read each record of the input stream until the end of line
          while ((s = dis.readLine()) != null) {
@@ -133,24 +136,25 @@ public class JavaGetUrl {
              //Create car park space from the start and end index
             space = (s.substring(startIndex2, endIndex2));
             System.out.println(space); //delete this
-            
+
 
             System.out.println("bevore insert into DB");//delete this
-            System.out.printf("%d\n", totalCarPark);//delete this
+            System.out.println(time);//delete this
             
 //          Insert data into the database
-            String query = "INSERT INTO carpark(id,name,space) VALUES('" + totalCarPark + "','" + carpark + "','" + space + "')";
+            String query = "INSERT INTO carpark(id,name,space,timedate) VALUES('" + totalCarPark + "','" + carpark + "','" + space + "','" + time + "'  )";
                 state.executeUpdate(query);           
 
          }//end if 
          
-         else
-         {
-//           System.out.println( );//delete this
-             
-         }// end else
+//         else
+//         {
+////           System.out.println( );//delete this
+//             
+//         }// end else
 
          } //end while loop
+         
          }//end of try
          
            catch (SQLException ex) {
@@ -185,15 +189,12 @@ public class JavaGetUrl {
  
       } // end of 'finally' clause
 
-      
-                //Calling function to retrieve time - noch insert in DB
-            String time = getDateTime();
-            System.out.println(time);//delete this
+
    }  // end of main
    
    //Function to retrieve time
     private static String getDateTime() {
-    DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
     Date date = new Date();
      System.out.println(dateFormat.format(date));
     return dateFormat.format(date);
